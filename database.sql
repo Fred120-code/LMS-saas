@@ -3,9 +3,8 @@
 --  Script de création de la base de données
 --  Compatible MySQL / XAMPP
 -- ============================================================
-
-CREATE DATABASE IF NOT EXISTS lms_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE lms_db;
+-- CREATE DATABASE IF NOT EXISTS lms_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- USE lms_db;
 
 -- ============================================================
 -- Table : users
