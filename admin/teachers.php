@@ -60,7 +60,7 @@ $teachers = $db->query(
       <div class="card">
         <div class="card-header">
           <h2>Enseignants (<?= count($teachers) ?>)</h2>
-          <button class="btn btn-primary" onclick="openModal('modal-add')">➕ Ajouter</button>
+          <button class="btn btn-primary" onclick="openModal('modal-add')">Ajouter</button>
         </div>
         <div class="table-wrap">
           <table>

@@ -66,7 +66,7 @@ $modules = $db->query(
       <div class="card">
         <div class="card-header">
           <h2>Modules (<?= count($modules) ?>)</h2>
-          <button class="btn btn-primary" onclick="openModal('modal-create')">➕ Nouveau module</button>
+          <button class="btn btn-primary" onclick="openModal('modal-create')"> Nouveau module</button>
         </div>
         <div class="card-body" style="padding-top:12px;">
           <input class="form-control mb-2" type="search" id="search-mod" placeholder="Rechercher…" style="max-width:320px;">

@@ -1,11 +1,11 @@
 <?php
-//  Configuration de la base de données
+//  Configuration de la base de données (Support des variables d'environnement pour le déploiement)
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'lms_db');
-define('BASE_URL', 'http://localhost/lms');
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') !== false ? getenv('DB_PASS') : '');
+define('DB_NAME', getenv('DB_NAME') ?: 'lms_db');
+define('BASE_URL', getenv('BASE_URL') ?: 'http://localhost/lms');
 define('UPLOAD_PDF',   __DIR__ . '/../uploads/pdfs/');
 define('UPLOAD_VIDEO', __DIR__ . '/../uploads/videos/');
 define('UPLOAD_CERT',  __DIR__ . '/../uploads/certificates/');
