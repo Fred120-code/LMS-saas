@@ -1,4 +1,4 @@
-# 📚 EduLearn — Learning Management System (LMS)
+# EduLearn — Learning Management System (LMS)
 
 EduLearn est une plateforme Web moderne de gestion de l'apprentissage (LMS - Learning Management System) développée en **PHP (Vanilla)**, **MySQL**, **CSS personnalisé** et **JavaScript (AJAX)**.
 
@@ -6,7 +6,7 @@ Cette plateforme permet de gérer des parcours de formation comprenant des modul
 
 ---
 
-## 📁 Structure des dossiers
+## Structure des dossiers
 
 Le projet est structuré de manière modulaire selon l'arborescence ci-dessous :
 
@@ -62,7 +62,7 @@ LMS/
 
 ---
 
-## 🛠️ Instructions d'installation et de configuration
+## Instructions d'installation et de configuration
 
 ### 1. Prérequis
 - Un serveur web local (comme **XAMPP**, **WampServer**, **MAMP** ou Docker) avec PHP 7.4+ et MySQL.
@@ -90,7 +90,7 @@ define('BASE_URL', 'http://localhost/lms'); // URL d'accès locale (sans slash f
 
 ---
 
-## 🔑 Comptes de Démo (Créés par database.sql)
+## Comptes de Démo (Créés par database.sql)
 
 Le mot de passe pour tous les comptes par défaut est : **`Password123!`**
 
@@ -103,7 +103,7 @@ Le mot de passe pour tous les comptes par défaut est : **`Password123!`**
 
 ---
 
-## 🖥️ Aperçu des Fonctionnalités Implémentées
+## Aperçu des Fonctionnalités Implémentées
 
 - **Index Intelligent** : Connexion unifiée avec routage dynamique automatique selon le rôle (`admin`, `teacher`, `student`).
 - **Sécurité et Permissions** : Validation stricte des sessions et droits d'accès à l'aide de middleware en PHP (`includes/auth.php`).

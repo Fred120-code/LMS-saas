@@ -101,7 +101,7 @@ if ($total_lessons > 0) {
 
     <main class="page-body">
       <!-- Header Module -->
-      <div class="card mb-3" style="background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%); color: #fff;">
+      <div class="card mb-3" style="background:var(--primary); color: #fff;">
         <div class="card-body" style="padding: 32px;">
           <h1 style="color:#fff; margin-bottom:12px; font-family:'Playfair Display', serif;"><?= htmlspecialchars($module['titre']) ?></h1>
           <p style="color: rgba(255,255,255,.8); font-size:1rem; margin-bottom:20px; max-width:800px;">

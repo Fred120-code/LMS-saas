@@ -677,7 +677,7 @@ tbody td {
 .progress-bar-fill {
   height: 100%;
   border-radius: 99px;
-  background: linear-gradient(90deg, var(--primary-light), var(--accent));
+  background:var(--primary-light);
   transition: width .6s ease;
 }
 
@@ -898,7 +898,7 @@ tbody td {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+  background:var(--primary);
 }
 
 .login-box {

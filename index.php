@@ -53,10 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <div class="login-page">
   <div class="login-box">
-    <div class="login-logo">
-      <span class="logo-text">EduLearn</span>
-      <span class="logo-sub" style="display:block">Learning Management System</span>
-    </div>
 
     <h2>Connexion</h2>
     <p>Entrez vos identifiants pour accéder à la plateforme.</p>
@@ -84,6 +80,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         Se connecter
       </button>
     </form>
+
+    <div class="text-center mt-2" style="font-size:.85rem;">
+      Pas encore de compte ? <a href="register.php" style="color:var(--primary-light);font-weight:600;text-decoration:underline;">S'inscrire</a>
+    </div>
 
     <p class="text-muted text-center mt-3" style="font-size:.78rem;">
       Comptes de démo · Mot de passe : <strong>Password123!</strong><br>
