@@ -91,84 +91,100 @@ if ($quiz) {
             <main class="page-body">
                 <div class="back-nav">
                     <a href="lesson.php?id=<?= $lesson_id ?>">
-                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"
-                            style="vertical-align: middle; margin-right: 4px;">
-                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2"
+                            fill="none" style="vertical-align: middle; margin-right: 4px;">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z">
+                            </path>
                         </svg>
-                        <?= htmlspecialchars($lesson['module_titre']) ?> / <?= htmlspecialchars($lesson['course_titre']) ?> / <?= htmlspecialchars($lesson['titre']) ?>
+                        <?= htmlspecialchars($lesson['module_titre']) ?> /
+                        <?= htmlspecialchars($lesson['course_titre']) ?> /
+                        <?= htmlspecialchars($lesson['titre']) ?>
                     </a>
                 </div>
                 <?php if ($quiz): ?>
                     <!-- Evaluation Section (Quiz) -->
                     <div style="margin-top: 32px;">
-                        <h2 class="text-center mb-3">Évaluation : <?= htmlspecialchars($quiz['titre']) ?></h2>
+                        <h2 class="text-center mb-3">Évaluation :
+                            <?= htmlspecialchars($quiz['titre']) ?>
+                        </h2>
 
-                <div id="quiz-result" class="<?= $quiz_result ? '' : 'hidden' ?>" style="margin-bottom: 24px;">
-                    <?php if ($quiz_result): ?>
-                        <div class="score-card">
-                            <div class="score-circle"><?= round($quiz_result['pourcentage']) ?>%</div>
-                            <h2><?= $quiz_result['passed'] ? 'Félicitations ! Réussi' : 'À améliorer' ?></h2>
-                            <p>Vous avez obtenu <strong><?= $quiz_result['score'] ?> / <?= $quiz_result['total'] ?></strong>
-                                bonnes
-                                réponses.</p>
-                            <?php
-                            // Check if module completed to award certificate
-                            $stmt_cert = $db->prepare("SELECT id FROM certificates WHERE student_id = ? AND module_id = ? LIMIT 1");
-                            $stmt_cert->execute([$student_id, $module_id]);
-                            $has_cert = (bool) $stmt_cert->fetch();
-                            if ($has_cert):
-                                ?>
-                                <p class="mt-2"><a href="certificates.php" class="btn btn-accent mt-2">Télécharger le certificat</a>
-                                </p>
-                            <?php endif; ?>
-                            <button class="btn btn-ghost mt-3" onclick="showQuizForm()">Repasser l'évaluation</button>
-                        </div>
-                    <?php endif; ?>
-                </div>
-
-                <div id="quiz-form-container" class="quiz-wrap <?= $quiz_result ? 'hidden' : '' ?>">
-                    <form id="quiz-form">
-                        <?php foreach ($questions as $index => $q): ?>
-                            <div class="quiz-question" data-question-id="<?= $q['id'] ?>">
-                                <div class="quiz-question-text">
-                                    Question <?= $index + 1 ?> : <?= htmlspecialchars($q['question']) ?>
+                        <div id="quiz-result" class="<?= $quiz_result ? '' : 'hidden' ?>" style="margin-bottom: 24px;">
+                            <?php if ($quiz_result): ?>
+                                <div class="score-card">
+                                    <div class="score-circle"><?= round($quiz_result['pourcentage']) ?>%
+                                    </div>
+                                    <h2>
+                                        <?= $quiz_result['passed'] ? 'Félicitations ! Réussi' : 'À améliorer' ?>
+                                    </h2>
+                                    <p>Vous avez obtenu <strong>
+                                            <?= $quiz_result['score'] ?> / <?= $quiz_result['total'] ?>
+                                        </strong>
+                                        bonnes
+                                        réponses.</p>
+                                    <?php
+                                    // Check if module completed to award certificate
+                                    $stmt_cert = $db->prepare("SELECT id FROM certificates WHERE student_id = ? AND module_id = ? LIMIT 1");
+                                    $stmt_cert->execute([$student_id, $module_id]);
+                                    $has_cert = (bool) $stmt_cert->fetch();
+                                    if ($has_cert):
+                                        ?>
+                                        <p class="mt-2"><a href="certificates.php" class="btn btn-accent mt-2">Télécharger le
+                                                certificat</a>
+                                        </p>
+                                    <?php endif; ?>
+                                    <button class="btn btn-ghost mt-3" onclick="showQuizForm()">Repasser l'évaluation</button>
                                 </div>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q_<?= $q['id'] ?>" value="A" required>
-                                    <strong>A.</strong> &nbsp;<?= htmlspecialchars($q['option_a']) ?>
-                                </label>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q_<?= $q['id'] ?>" value="B">
-                                    <strong>B.</strong> &nbsp;<?= htmlspecialchars($q['option_b']) ?>
-                                </label>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q_<?= $q['id'] ?>" value="C">
-                                    <strong>C.</strong> &nbsp;<?= htmlspecialchars($q['option_c']) ?>
-                                </label>
-                                <label class="quiz-option">
-                                    <input type="radio" name="q_<?= $q['id'] ?>" value="D">
-                                    <strong>D.</strong> &nbsp;<?= htmlspecialchars($q['option_d']) ?>
-                                </label>
-                            </div>
-                        <?php endforeach; ?>
-
-                        <div class="text-center">
-                            <button type="button" id="quiz-submit-btn" class="btn btn-primary"
-                                style="padding:12px 24px; font-size:1rem;"
-                                onclick="submitQuiz(<?= $quiz['id'] ?>, <?= $lesson_id ?>)">
-                                Soumettre mes réponses
-                            </button>
+                            <?php endif; ?>
                         </div>
-                    </form>
-                </div>
-            </div>
+
+                        <div id="quiz-form-container" class="quiz-wrap <?= $quiz_result ? 'hidden' : '' ?>">
+                            <form id="quiz-form">
+                                <?php foreach ($questions as $index => $q): ?>
+                                    <div class="quiz-question" data-question-id="<?= $q['id'] ?>">
+                                        <div class="quiz-question-text">
+                                            Question
+                                            <?= $index + 1 ?> :
+                                            <?= htmlspecialchars($q['question']) ?>
+                                        </div>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q_<?= $q['id'] ?>" value="A" required>
+                                            <strong>A.</strong> &nbsp;<?= htmlspecialchars($q['option_a']) ?>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q_<?= $q['id'] ?>" value=" B">
+                                            <strong>B.</strong> &nbsp;
+                                            <?= htmlspecialchars($q['option_b']) ?>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q_<?= $q['id'] ?>" value="C">
+                                            <strong>C.</strong> &nbsp;<?= htmlspecialchars($q['option_c']) ?>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q_<?= $q['id'] ?>" value="D">
+                                            <strong>D.</strong> &nbsp;<?= htmlspecialchars($q['option_d']) ?>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+
+                                <div class="text-center">
+                                    <button type="button" id="quiz-submit-btn" class="btn btn-primary"
+                                        style="padding:12px 24px; font-size:1rem;" onclick="submitQuiz(
+                                            <?= $quiz['id'] ?>,
+                                            <?= $lesson_id ?>)">
+                                        Soumettre mes réponses
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                <?php endif; ?>
-            </main>
-        </div>
+            </div>
+        <?php endif; ?>
+        </main>
+    </div>
     </div>
 
     <div id="toast-container" class="toast-container"></div>
+    <script src="../assets/js/app.js"></script>
     <script>
         function showQuizForm() {
             document.getElementById('quiz-result').classList.add('hidden');
