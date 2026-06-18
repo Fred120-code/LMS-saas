@@ -194,9 +194,9 @@ if ($quiz) {
             } else {
               Toast.success('Leçon validée avec succès !');
               const box = document.getElementById('completion-status-box');
-              let html = '<span class="badge badge-green" style="font-size:1rem; padding: 10px 16px;">✓ Leçon complétée</span>';
+              let html = '<span class="badge badge-green" style="font-size:1rem; padding: 10px 16px;">Leçon complétée</span>';
               if (hasQuiz) {
-                html += ' <a href="' + quizUrl + '" class="btn btn-primary" style="margin-left:12px;">📝 Faire le quiz</a>';
+                html += ' <a href="' + quizUrl + '" class="btn btn-primary" style="margin-left:12px;">Faire le quiz</a>';
               }
               box.innerHTML = html;
             }
