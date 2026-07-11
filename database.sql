@@ -1,14 +1,6 @@
--- ============================================================
---  LMS - Learning Management System
---  Script de création de la base de données
---  Compatible MySQL / XAMPP
--- ============================================================
--- CREATE DATABASE IF NOT EXISTS lms_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
--- USE lms_db;
 
--- ============================================================
+
 -- Table : users
--- ============================================================
 CREATE TABLE users (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     nom         VARCHAR(100)  NOT NULL,
@@ -21,9 +13,7 @@ CREATE TABLE users (
     updated_at  DATETIME      DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- ============================================================
 -- Table : modules
--- ============================================================
 CREATE TABLE modules (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     titre       VARCHAR(255)  NOT NULL,
@@ -34,9 +24,8 @@ CREATE TABLE modules (
     FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ============================================================
 -- Table : courses
--- ============================================================
+
 CREATE TABLE courses (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     module_id   INT           NOT NULL,
@@ -49,9 +38,9 @@ CREATE TABLE courses (
     FOREIGN KEY (teacher_id) REFERENCES users(id)   ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ============================================================
+
 -- Table : lessons
--- ============================================================
+
 CREATE TABLE lessons (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     course_id   INT           NOT NULL,
@@ -63,9 +52,9 @@ CREATE TABLE lessons (
     FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ============================================================
--- Table : quizzes  (une évaluation par leçon)
--- ============================================================
+
+-- Table : quizzes 
+
 CREATE TABLE quizzes (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     lesson_id   INT           NOT NULL UNIQUE,
@@ -74,9 +63,9 @@ CREATE TABLE quizzes (
     FOREIGN KEY (lesson_id) REFERENCES lessons(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ============================================================
+
 -- Table : quiz_questions
--- ============================================================
+
 CREATE TABLE quiz_questions (
     id              INT AUTO_INCREMENT PRIMARY KEY,
     quiz_id         INT           NOT NULL,
@@ -90,9 +79,9 @@ CREATE TABLE quiz_questions (
     FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ============================================================
--- Table : results  (résultat d'un quiz par étudiant)
--- ============================================================
+
+-- Table : results
+
 CREATE TABLE results (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     student_id  INT           NOT NULL,
@@ -109,9 +98,9 @@ CREATE TABLE results (
     FOREIGN KEY (lesson_id)  REFERENCES lessons(id)  ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ============================================================
--- Table : progress  (progression par module et par étudiant)
--- ============================================================
+
+-- Table : progress
+
 CREATE TABLE progress (
     id              INT AUTO_INCREMENT PRIMARY KEY,
     student_id      INT           NOT NULL,
@@ -125,9 +114,9 @@ CREATE TABLE progress (
     FOREIGN KEY (module_id)  REFERENCES modules(id)  ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ============================================================
+
 -- Table : certificates
--- ============================================================
+
 CREATE TABLE certificates (
     id              INT AUTO_INCREMENT PRIMARY KEY,
     student_id      INT           NOT NULL,
@@ -139,9 +128,9 @@ CREATE TABLE certificates (
     FOREIGN KEY (module_id)  REFERENCES modules(id)  ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ============================================================
+
 -- Table : student_lessons
--- ============================================================
+
 CREATE TABLE student_lessons (
     student_id  INT NOT NULL,
     lesson_id   INT NOT NULL,
@@ -150,24 +139,3 @@ CREATE TABLE student_lessons (
     FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (lesson_id) REFERENCES lessons(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
-
--- ============================================================
--- Données de démo
--- ============================================================
-
--- Mot de passe pour tous : Password123!  (hashé avec password_hash)
-INSERT INTO users (nom, prenom, email, password, role) VALUES
-('Dupont',  'Admin',   'admin@lms.com',    '$2y$10$FAYFPJgk8OwDONpPXxRFb.RWlSs3gQi4jW03wNuEaEK4JqzNpQuHG', 'admin'),
-('Martin',  'Sophie',  'sophie@lms.com',   '$2y$10$FAYFPJgk8OwDONpPXxRFb.RWlSs3gQi4jW03wNuEaEK4JqzNpQuHG', 'teacher'),
-('Nguyen',  'Julien',  'julien@lms.com',   '$2y$10$FAYFPJgk8OwDONpPXxRFb.RWlSs3gQi4jW03wNuEaEK4JqzNpQuHG', 'student'),
-('Kamga',   'Fatima',  'fatima@lms.com',   '$2y$10$FAYFPJgk8OwDONpPXxRFb.RWlSs3gQi4jW03wNuEaEK4JqzNpQuHG', 'student');
-
-INSERT INTO modules (titre, description, created_by) VALUES
-('Développement Web',  'HTML, CSS, JavaScript et PHP', 1),
-('Bases de données',   'SQL, MySQL et modélisation',   1),
-('Algorithmique',      'Structures et algorithmes de base', 1);
-
-INSERT INTO courses (module_id, teacher_id, titre, description) VALUES
-(1, 2, 'Introduction au HTML', 'Les bases du langage HTML5'),
-(1, 2, 'CSS et mise en forme',  'Styliser vos pages web'),
-(2, 2, 'SQL fondamentaux',      'SELECT, INSERT, UPDATE, DELETE');

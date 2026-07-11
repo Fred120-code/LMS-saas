@@ -55,39 +55,65 @@ if (isset($_GET['print_id'])) {
             background: #fff;
             padding: 0;
             margin: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
           }
           .print-btn-container {
             display: none;
           }
           .cert-card {
-            box-shadow: none;
-            border: 2px solid var(--accent);
+            box-shadow: none !important;
             margin: 0;
             width: 100%;
             max-width: 100%;
+            border: 12px solid #0F172A !important;
+          }
+          .cert-border-inner {
+            border: 2px solid #D4AF37 !important;
           }
         }
       </style>
     </head>
     <body>
       <div class="print-btn-container">
-        <button onclick="window.print()" class="btn btn-primary">🖨 Imprimer / Enregistrer en PDF</button>
+        <button onclick="window.print()" class="btn btn-primary"> Imprimer / Enregistrer en PDF</button>
         <button onclick="window.close()" class="btn btn-ghost">Fermer</button>
       </div>
 
       <div class="cert-card">
-        <div class="cert-stamp">🎓</div>
-        <div class="cert-title">Certificat de Réussite</div>
-        <div class="cert-sub">Ce document atteste que</div>
-        <div class="cert-name" style="font-size: 2.2rem; margin: 16px 0;"><?= htmlspecialchars($user['prenom'] . ' ' . $user['nom']) ?></div>
-        <div class="cert-sub">a complété avec succès et à 100% le module de formation</div>
-        <div class="cert-module" style="font-size: 1.5rem; font-weight: 700; color: var(--primary); margin: 20px 0; font-family:'Playfair Display', serif;">
-          <?= htmlspecialchars($certificate['module_titre']) ?>
+        <div class="cert-border-inner">
+          <div class="cert-header">
+            <div class="cert-logo">LMS Academy</div>
+          </div>
+          <div class="cert-title">Certificat de Réussite</div>
+          <div class="cert-sub">Ce document atteste que</div>
+          <div class="cert-name"><?= htmlspecialchars($user['prenom'] . ' ' . $user['nom']) ?></div>
+          <div class="cert-sub">a complété avec succès et à 100% le module de formation</div>
+          <div class="cert-module">
+            <?= htmlspecialchars($certificate['module_titre']) ?>
+          </div>
+          
+          <div class="cert-footer">
+            <div class="cert-signature">
+              <div class="signature-line"></div>
+              <div class="signature-name">Directeur de Formation</div>
+            </div>
+            <div class="cert-stamp-badge">
+              <div class="stamp-inner">
+                <span class="stamp-text">CERTIFIÉ</span>
+                <span class="stamp-year"><?= date('Y') ?></span>
+              </div>
+            </div>
+            <div class="cert-date">
+              <div class="signature-line"><?= date('d/m/Y', strtotime($certificate['delivered_at'])) ?></div>
+              <div class="signature-name">Date de délivrance</div>
+            </div>
+          </div>
+
+          <div class="cert-meta">
+            Code de vérification : LMS-CERT-<?= str_pad($certificate['id'], 6, '0', STR_PAD_LEFT) ?>
+          </div>
         </div>
-        <div class="cert-sub" style="margin-top: 32px;">Délivré avec succès le <?= date('d/m/Y', strtotime($certificate['delivered_at'])) ?></div>
-        <p class="text-muted" style="font-size: .75rem; margin-top: 48px; border-top: 1px solid var(--border); padding-top: 12px;">
-          Code de vérification : LMS-CERT-<?= str_pad($certificate['id'], 6, '0', STR_PAD_LEFT) ?> · EduLearn LMS
-        </p>
       </div>
     </body>
     </html>
@@ -157,7 +183,7 @@ $certificates = $stmt->fetchAll();
                     <td class="text-muted"><?= date('d/m/Y', strtotime($c['delivered_at'])) ?></td>
                     <td>
                       <a href="certificates.php?print_id=<?= $c['id'] ?>" target="_blank" class="btn btn-accent btn-sm">
-                        📜 Voir / Imprimer
+                         Voir / Imprimer
                       </a>
                     </td>
                   </tr>

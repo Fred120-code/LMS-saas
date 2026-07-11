@@ -154,15 +154,19 @@ function showQuizResult(res, questions) {
   if (res.corrections) {
     questions.forEach(q => {
       const id = q.dataset.questionId;
-      const correct = res.corrections[id];
+      const correct = String(res.corrections[id] || '').trim().toUpperCase();
       q.querySelectorAll('.quiz-option').forEach(opt => {
-        const val = opt.querySelector('input').value;
+        const val = String(opt.querySelector('input').value).trim().toUpperCase();
         opt.style.pointerEvents = 'none';
-        if (val === correct) opt.classList.add('correct');
+        if (val === correct) {
+          opt.classList.add('correct');
+        }
       });
 
       const selected = q.querySelector('input:checked');
-      if (selected && selected.value !== correct) selected.closest('.quiz-option').classList.add('wrong');
+      if (selected && String(selected.value).trim().toUpperCase() !== correct) {
+        selected.closest('.quiz-option').classList.add('wrong');
+      }
     });
   }
 
@@ -200,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', e => {
       e.preventDefault();
       const href = link.getAttribute('href');
-      
+
       let modal = document.getElementById('logout-confirm-modal');
       if (!modal) {
         modal = document.createElement('div');
@@ -216,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <button class="modal-close">&times;</button>
             </div>
             <div class="modal-body" style="padding: 24px; color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">
-              Êtes-vous sûr de vouloir vous déconnecter de votre compte EduLearn ? Toutes les modifications non enregistrées seront perdues.
+              Êtes-vous sûr de vouloir vous déconnecter de votre compte ? Toutes les modifications non enregistrées seront perdues.
             </div>
             <div class="modal-footer" style="padding: 16px 24px; background: var(--surface2); gap: 12px;">
               <button class="btn btn-ghost modal-close-btn" style="border: 1px solid var(--border); color: var(--text-muted); background: var(--surface); font-size: 0.85rem; padding: 8px 16px; cursor: pointer;">
@@ -230,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         `;
         document.body.appendChild(modal);
-        
+
         const close = () => modal.classList.remove('open');
         modal.querySelector('.modal-close').addEventListener('click', close);
         modal.querySelector('.modal-close-btn').addEventListener('click', close);
@@ -240,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         modal.querySelector('.btn-danger').setAttribute('href', href);
       }
-      
+
       setTimeout(() => modal.classList.add('open'), 10);
     });
   });

@@ -151,7 +151,7 @@ if ($quiz) {
                                             <strong>A.</strong> &nbsp;<?= htmlspecialchars($q['option_a']) ?>
                                         </label>
                                         <label class="quiz-option">
-                                            <input type="radio" name="q_<?= $q['id'] ?>" value=" B">
+                                            <input type="radio" name="q_<?= $q['id'] ?>" value="B">
                                             <strong>B.</strong> &nbsp;
                                             <?= htmlspecialchars($q['option_b']) ?>
                                         </label>
