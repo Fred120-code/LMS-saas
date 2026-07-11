@@ -11,8 +11,8 @@ $user = currentUser();
 $student_id = $user['id'];
 
 // recuperer les donnees
-$quiz_id   = isset($_POST['quiz_id']) ? (int)$_POST['quiz_id'] : null;
-$lesson_id = isset($_POST['lesson_id']) ? (int)$_POST['lesson_id'] : null;
+$quiz_id = isset($_POST['quiz_id']) ? (int) $_POST['quiz_id'] : null;
+$lesson_id = isset($_POST['lesson_id']) ? (int) $_POST['lesson_id'] : null;
 $raw_answers = isset($_POST['answers']) ? $_POST['answers'] : '';
 
 if (!$quiz_id || !$lesson_id || !$raw_answers) {
@@ -31,7 +31,7 @@ try {
     $stmt_quiz = $db->prepare("SELECT id, titre FROM quizzes WHERE id = ? AND lesson_id = ? LIMIT 1");
     $stmt_quiz->execute([$quiz_id, $lesson_id]);
     $quiz = $stmt_quiz->fetch();
-    
+
     if (!$quiz) {
         jsonResponse(['error' => 'Quiz ou leçon introuvable.'], 404);
     }
@@ -51,9 +51,9 @@ try {
     $corrections = [];
 
     foreach ($questions as $q) {
-        $q_id = (int)$q['id'];
+        $q_id = (int) $q['id'];
         $correct_ans = $q['bonne_reponse'];
-        
+
         $corrections[$q_id] = $correct_ans;
         $total++;
 
@@ -66,7 +66,7 @@ try {
     }
 
     $pourcentage = $total > 0 ? round(($score / $total) * 100, 2) : 0.00;
-    
+
     // La note de passage est fixée à 50% ou plus
     $passed = $pourcentage >= 50.00 ? 1 : 0;
 
@@ -106,7 +106,7 @@ try {
     ");
     $stmt_mod->execute([$lesson_id]);
     $module_info = $stmt_mod->fetch();
-    $module_id = $module_info ? (int)$module_info['module_id'] : 0;
+    $module_id = $module_info ? (int) $module_info['module_id'] : 0;
 
     $has_new_certificate = false;
 
@@ -119,7 +119,7 @@ try {
             WHERE c.module_id = ?
         ");
         $stmt_total_l->execute([$module_id]);
-        $total_lessons = (int)$stmt_total_l->fetchColumn();
+        $total_lessons = (int) $stmt_total_l->fetchColumn();
 
         $stmt_done_l = $db->prepare("
             SELECT COUNT(sl.lesson_id) 
@@ -129,7 +129,7 @@ try {
             WHERE sl.student_id = ? AND c.module_id = ?
         ");
         $stmt_done_l->execute([$student_id, $module_id]);
-        $completed_lessons = (int)$stmt_done_l->fetchColumn();
+        $completed_lessons = (int) $stmt_done_l->fetchColumn();
 
         $progression_pct = 0.00;
         if ($total_lessons > 0) {
@@ -156,7 +156,7 @@ try {
         if ($progression_pct >= 100.00) {
             $stmt_cert_check = $db->prepare("SELECT id FROM certificates WHERE student_id = ? AND module_id = ? LIMIT 1");
             $stmt_cert_check->execute([$student_id, $module_id]);
-            
+
             if (!$stmt_cert_check->fetch()) {
                 // generer une nouvelle entree de certificat
                 $verification_code = bin2hex(random_bytes(8)); // Generates a 16-character secure random hex string
@@ -177,18 +177,18 @@ try {
     if ($module_id > 0) {
         $stmt_c = $db->prepare("SELECT id FROM certificates WHERE student_id = ? AND module_id = ? LIMIT 1");
         $stmt_c->execute([$student_id, $module_id]);
-        $has_any_certificate = (bool)$stmt_c->fetch();
+        $has_any_certificate = (bool) $stmt_c->fetch();
     }
 
     jsonResponse([
-        'success'         => true,
-        'score'           => $score,
-        'total'           => $total,
-        'pourcentage'     => $pourcentage,
-        'passed'          => (bool)$passed,
-        'corrections'     => $corrections,
-        'module_id'       => $module_id,
-        'certificate'     => $has_any_certificate,
+        'success' => true,
+        'score' => $score,
+        'total' => $total,
+        'pourcentage' => $pourcentage,
+        'passed' => (bool) $passed,
+        'corrections' => $corrections,
+        'module_id' => $module_id,
+        'certificate' => $has_any_certificate,
         'certificate_url' => 'certificates.php'
     ]);
 

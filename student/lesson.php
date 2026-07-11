@@ -172,41 +172,41 @@ if ($quiz) {
   <script src="../assets/js/app.js"></script>
   <script>
     <?php if (isset($_GET['notice']) && $_GET['notice'] === 'complete_first'): ?>
-        window.addEventListener('DOMContentLoaded', function () {
-          Toast.warn('Vous devez d\'abord terminer cette leçon avant de faire le quiz.');
-        });
+      window.addEventListener('DOMContentLoaded', function () {
+        Toast.warn('Vous devez d\'abord terminer cette leçon avant de faire le quiz.');
+      });
     <?php endif; ?>
 
-      function markLessonCompleted(lessonId) {
-        const btn = document.getElementById('btn-complete-lesson');
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner" style="width:18px;height:18px;border-width:2px"></span> Validation…';
+    function markLessonCompleted(lessonId) {
+      const btn = document.getElementById('btn-complete-lesson');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner" style="width:18px;height:18px;border-width:2px"></span> Validation…';
 
-        const hasQuiz = <?= $quiz ? 'true' : 'false' ?>;
-        const quizUrl = 'quizz.php?id=<?= $lesson_id ?>';
+      const hasQuiz = <?= $quiz ? 'true' : 'false' ?>;
+      const quizUrl = 'quizz.php?id=<?= $lesson_id ?>';
 
-        ajax('../api/progress_update.php', { lesson_id: lessonId })
-          .then(res => {
-            if (res.error) {
-              Toast.error(res.error);
-              btn.disabled = false;
-              btn.innerHTML = 'Marquer comme terminé';
-            } else {
-              Toast.success('Leçon validée avec succès !');
-              const box = document.getElementById('completion-status-box');
-              let html = '<span class="badge badge-green" style="font-size:1rem; padding: 10px 16px;">Leçon complétée</span>';
-              if (hasQuiz) {
-                html += ' <a href="' + quizUrl + '" class="btn btn-primary" style="margin-left:12px;">Faire le quiz</a>';
-              }
-              box.innerHTML = html;
-            }
-          })
-          .catch(() => {
-            Toast.error('Une erreur est survenue lors de la communication avec le serveur.');
+      ajax('../api/progress_update.php', { lesson_id: lessonId })
+        .then(res => {
+          if (res.error) {
+            Toast.error(res.error);
             btn.disabled = false;
             btn.innerHTML = 'Marquer comme terminé';
-          });
-      }
+          } else {
+            Toast.success('Leçon validée avec succès !');
+            const box = document.getElementById('completion-status-box');
+            let html = '<span class="badge badge-green" style="font-size:1rem; padding: 10px 16px;">Leçon complétée</span>';
+            if (hasQuiz) {
+              html += ' <a href="' + quizUrl + '" class="btn btn-primary" style="margin-left:12px;">Faire le quiz</a>';
+            }
+            box.innerHTML = html;
+          }
+        })
+        .catch(() => {
+          Toast.error('Une erreur est survenue lors de la communication avec le serveur.');
+          btn.disabled = false;
+          btn.innerHTML = 'Marquer comme terminé';
+        });
+    }
   </script>
 </body>
 

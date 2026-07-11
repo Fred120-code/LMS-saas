@@ -11,8 +11,8 @@ $user = currentUser();
 $student_id = $user['id'];
 
 // recuperer les donnees 
-$lesson_id = isset($_POST['lesson_id']) ? (int)$_POST['lesson_id'] : null;
-$module_id = isset($_POST['module_id']) ? (int)$_POST['module_id'] : null;
+$lesson_id = isset($_POST['lesson_id']) ? (int) $_POST['lesson_id'] : null;
+$module_id = isset($_POST['module_id']) ? (int) $_POST['module_id'] : null;
 
 $db = getDB();
 
@@ -29,10 +29,10 @@ try {
         ");
         $stmt->execute([$lesson_id]);
         $lesson_info = $stmt->fetch();
-        
+
         if ($lesson_info) {
-            $module_id = (int)$lesson_info['module_id'];
-            
+            $module_id = (int) $lesson_info['module_id'];
+
             // marquer la lecon comme terminée par cet etudiant
             $insert = $db->prepare("
                 INSERT IGNORE INTO student_lessons (student_id, lesson_id) 
@@ -56,7 +56,7 @@ try {
         WHERE c.module_id = ?
     ");
     $stmt_total->execute([$module_id]);
-    $total_lessons = (int)$stmt_total->fetchColumn();
+    $total_lessons = (int) $stmt_total->fetchColumn();
 
     // compter les lecon termine par cet etudiant
     $stmt_done = $db->prepare("
@@ -67,7 +67,7 @@ try {
         WHERE sl.student_id = ? AND c.module_id = ?
     ");
     $stmt_done->execute([$student_id, $module_id]);
-    $completed_lessons = (int)$stmt_done->fetchColumn();
+    $completed_lessons = (int) $stmt_done->fetchColumn();
 
     // calculer le pourcentage
     $pourcentage = 0.00;

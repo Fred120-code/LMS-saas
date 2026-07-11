@@ -25,85 +25,94 @@ $results = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>LMS — Résultats des Étudiants</title>
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+
 <body>
-<div class="shell">
-  <?php include '../includes/sidebar_teacher.php'; ?>
-  <div class="main-content">
-    <header class="topbar">
-      <button class="menu-toggle">☰</button>
-      <span class="topbar-title">Suivi des Résultats</span>
-    </header>
+  <div class="shell">
+    <?php include '../includes/sidebar_teacher.php'; ?>
+    <div class="main-content">
+      <header class="topbar">
+        <button class="menu-toggle">☰</button>
+        <span class="topbar-title">Suivi des Résultats</span>
+      </header>
 
-    <main class="page-body">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:16px;">
-        <h2>Résultats des étudiants à vos quiz</h2>
-        <input class="form-control" type="search" id="search-student-results" placeholder="Rechercher un étudiant ou un cours…" style="max-width:320px; margin-top:0;">
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <h3>Résultats enregistrés (<?= count($results) ?>)</h3>
+      <main class="page-body">
+        <div
+          style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:16px;">
+          <h2>Résultats des étudiants à vos quiz</h2>
+          <input class="form-control" type="search" id="search-student-results"
+            placeholder="Rechercher un étudiant ou un cours…" style="max-width:320px; margin-top:0;">
         </div>
-        <div class="table-wrap">
-          <table id="student-results-table">
-            <thead>
-              <tr>
-                <th>Étudiant</th>
-                <th>Cours / Leçon / Quiz</th>
-                <th>Score</th>
-                <th>Pourcentage</th>
-                <th>Statut</th>
-                <th>Date de passage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php if (empty($results)): ?>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Résultats enregistrés (<?= count($results) ?>)</h3>
+          </div>
+          <div class="table-wrap">
+            <table id="student-results-table">
+              <thead>
                 <tr>
-                  <td colspan="6" class="text-center text-muted" style="padding:48px;">
-                    Aucun étudiant n'a encore passé d'évaluation pour vos cours.
-                  </td>
+                  <th>Étudiant</th>
+                  <th>Cours / Leçon / Quiz</th>
+                  <th>Score</th>
+                  <th>Pourcentage</th>
+                  <th>Statut</th>
+                  <th>Date de passage</th>
                 </tr>
-              <?php else: ?>
-                <?php foreach ($results as $r): ?>
+              </thead>
+              <tbody>
+                <?php if (empty($results)): ?>
                   <tr>
-                    <td>
-                      <strong><?= htmlspecialchars($r['student_prenom'] . ' ' . $r['student_nom']) ?></strong><br>
-                      <span class="text-muted" style="font-size:.78rem;"><?= htmlspecialchars($r['student_email']) ?></span>
+                    <td colspan="6" class="text-center text-muted" style="padding:48px;">
+                      Aucun étudiant n'a encore passé d'évaluation pour vos cours.
                     </td>
-                    <td>
-                      <span class="text-muted" style="font-size:.8rem;"><?= htmlspecialchars($r['course_titre']) ?></span><br>
-                      <strong><?= htmlspecialchars($r['lesson_titre']) ?></strong> · <span style="font-style:italic; font-size:.85rem;"><?= htmlspecialchars($r['quiz_titre']) ?></span>
-                    </td>
-                    <td><?= $r['score'] ?> / <?= $r['total'] ?></td>
-                    <td><strong><?= round($r['pourcentage']) ?>%</strong></td>
-                    <td>
-                      <?php if ($r['passed']): ?>
-                        <span class="badge badge-green">Réussi</span>
-                      <?php else: ?>
-                        <span class="badge badge-red">Échoué</span>
-                      <?php endif; ?>
-                    </td>
-                    <td class="text-muted" style="font-size:.8rem;"><?= date('d/m/Y à H:i', strtotime($r['taken_at'])) ?></td>
                   </tr>
-                <?php endforeach; ?>
-              <?php endif; ?>
-            </tbody>
-          </table>
+                <?php else: ?>
+                  <?php foreach ($results as $r): ?>
+                    <tr>
+                      <td>
+                        <strong><?= htmlspecialchars($r['student_prenom'] . ' ' . $r['student_nom']) ?></strong><br>
+                        <span class="text-muted"
+                          style="font-size:.78rem;"><?= htmlspecialchars($r['student_email']) ?></span>
+                      </td>
+                      <td>
+                        <span class="text-muted"
+                          style="font-size:.8rem;"><?= htmlspecialchars($r['course_titre']) ?></span><br>
+                        <strong><?= htmlspecialchars($r['lesson_titre']) ?></strong> · <span
+                          style="font-style:italic; font-size:.85rem;"><?= htmlspecialchars($r['quiz_titre']) ?></span>
+                      </td>
+                      <td><?= $r['score'] ?> / <?= $r['total'] ?></td>
+                      <td><strong><?= round($r['pourcentage']) ?>%</strong></td>
+                      <td>
+                        <?php if ($r['passed']): ?>
+                          <span class="badge badge-green">Réussi</span>
+                        <?php else: ?>
+                          <span class="badge badge-red">Échoué</span>
+                        <?php endif; ?>
+                      </td>
+                      <td class="text-muted" style="font-size:.8rem;"><?= date('d/m/Y à H:i', strtotime($r['taken_at'])) ?>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
+                <?php endif; ?>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   </div>
-</div>
 
-<script src="../assets/js/app.js"></script>
-<script>
-tableSearch('search-student-results', 'student-results-table');
-</script>
+  <script src="../assets/js/app.js"></script>
+  <script>
+    tableSearch('search-student-results', 'student-results-table');
+  </script>
 </body>
+
 </html>
