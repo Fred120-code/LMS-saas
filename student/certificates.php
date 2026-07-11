@@ -441,13 +441,6 @@ if (isset($_GET['print_id'])) {
                   <div class="signature-label">Directeur de Formation</div>
                 </div>
                 
-                <div class="cert-seal">
-                  <div class="seal-content">
-                    <div class="seal-icon">★</div>
-                    <span class="seal-text">CERTIFIÉ</span>
-                    <span class="seal-year"><?= date('Y', strtotime($certificate['delivered_at'])) ?></span>
-                  </div>
-                </div>
                 
                 <div class="signature-block">
                   <div class="date-value"><?= date('d/m/Y', strtotime($certificate['delivered_at'])) ?></div>
@@ -456,8 +449,16 @@ if (isset($_GET['print_id'])) {
                 </div>
               </div>
 
-              <div class="cert-meta">
-                CODE DE VÉRIFICATION : LMS-CERT-<?= str_pad($certificate['id'], 6, '0', STR_PAD_LEFT) ?>
+              <div class="cert-meta" style="display:flex; justify-content:center; align-items:flex-end; gap: 16px;">
+                <?php
+                    $verify_url = "http://" . $_SERVER['HTTP_HOST'] . "/lms/verify.php?code=" . urlencode($certificate['verification_code']);
+                    $qr_url = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" . urlencode($verify_url);
+                ?>
+                <div style="text-align: right;">
+                    <div style="font-size: 9px; color: #9ca3af; font-family: monospace; letter-spacing: 1px; margin-bottom: 4px;">SCANNEZ POUR VÉRIFIER</div>
+                    <div style="font-size: 11px; color: var(--cert-primary); font-family: monospace; letter-spacing: 1px;">ID: <?= htmlspecialchars($certificate['verification_code']) ?></div>
+                </div>
+                <img src="<?= $qr_url ?>" alt="QR Code" width="50" height="50" style="border: 2px solid var(--cert-gold); padding: 2px; border-radius: 4px; background: #fff;">
               </div>
             </div>
         </div>

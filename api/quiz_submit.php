@@ -159,11 +159,12 @@ try {
             
             if (!$stmt_cert_check->fetch()) {
                 // generer une nouvelle entree de certificat
+                $verification_code = bin2hex(random_bytes(8)); // Generates a 16-character secure random hex string
                 $stmt_cert_gen = $db->prepare("
-                    INSERT INTO certificates (student_id, module_id, fichier) 
-                    VALUES (?, ?, NULL)
+                    INSERT INTO certificates (student_id, module_id, verification_code, fichier) 
+                    VALUES (?, ?, ?, NULL)
                 ");
-                $stmt_cert_gen->execute([$student_id, $module_id]);
+                $stmt_cert_gen->execute([$student_id, $module_id, $verification_code]);
                 $has_new_certificate = true;
             }
         }

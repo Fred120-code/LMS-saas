@@ -112,3 +112,21 @@ Le mot de passe pour tous les comptes par défaut est : **`Password123!`**
 - **Interface Premium** :
   - Design moderne, responsive et fluide (variables CSS personnalisées, polices Google Fonts, transitions fluides).
   - Bouton de **Déconnexion Premium** : Un bouton au style soigné avec animation SVG au survol et confirmation sécurisée par modale dynamique pour éviter toute sortie accidentelle.
+
+## Système d'Authentification des Certificats (SaaS Grade)
+
+Pour garantir l'authenticité des diplômes délivrés par le LMS, nous avons mis en place un système de vérification professionnel équivalent aux standards de l'industrie (Coursera, Udemy, LinkedIn Learning).
+
+### 1. Génération de l'Identifiant Unique (Hash)
+Lorsqu'un étudiant termine 100% des leçons et quiz d'un module, le système (`api/quiz_submit.php`) génère automatiquement un certificat en base de données. 
+À cet instant précis, un **identifiant cryptographique sécurisé** de 16 caractères (via `bin2hex(random_bytes(8))`) est créé et stocké dans la colonne `verification_code` de la table `certificates`. Cet identifiant garantit que chaque certificat est unique et impossible à deviner de manière séquentielle.
+
+### 2. Intégration du QR Code
+Sur la vue d'impression du certificat (`student/certificates.php`), l'identifiant unique est affiché en clair en bas du document.
+Afin de faciliter la vérification rapide par les employeurs, un **QR Code dynamique** est intégré au PDF. Généré à la volée, ce QR Code pointe vers l'URL exacte de vérification, embarquant l'ID du certificat en paramètre (ex: `http://votre-lms.com/verify.php?code=b3f8x2ac412`).
+
+### 3. Portail de Vérification Public (`verify.php`)
+Une page publique dédiée et haut de gamme permet à n'importe quel employeur de vérifier l'authenticité d'un diplôme :
+- **Par scan du QR Code :** En scannant le certificat imprimé, l'employeur atterrit directement sur la page qui confirme automatiquement la validité du diplôme.
+- **Par saisie manuelle :** L'employeur peut saisir le code alphanumérique manuellement dans la barre de recherche du portail.
+- **Sécurité et Feedback :** Le système interroge la base de données. Si le code est authentique, la page affiche le nom de l'étudiant, la formation complétée et la date d'obtention avec un check vert. Si le code est invalide, une erreur claire est renvoyée.
