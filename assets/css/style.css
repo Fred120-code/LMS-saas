@@ -1330,3 +1330,9 @@ tbody tr:last-child td {
     display: none;
   }
 }
+
+/* Toast warn variant (amber) */
+.toast.warn {
+  background: #92400E;
+  color: #fff;
+}

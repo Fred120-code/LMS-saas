@@ -20,7 +20,12 @@ const Toast = (() => {
     setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .4s'; setTimeout(() => t.remove(), 400); }, dur);
   }
 
-  return { success: m => show(m, 'success'), error: m => show(m, 'error'), info: m => show(m, '') };
+  return {
+    success: m => show(m, 'success'),
+    error:   m => show(m, 'error'),
+    info:    m => show(m, ''),
+    warn:    m => show(m, 'warn', 5000)
+  };
 })();
 
 // fonction ajax pour envoyer des donnees au serveur  
